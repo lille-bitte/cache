@@ -1,0 +1,15 @@
+{
+	"autoload": {
+		"psr-4": {
+			"LilleBitte\\Cache\\": "src/"
+		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"LilleBitte\\Cache\\Tests\\": "tests/"
+		}
+	},
+    "require": {
+        "psr/cache": "^1.0"
+    }
+}
