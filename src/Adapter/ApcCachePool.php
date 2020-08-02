@@ -30,7 +30,7 @@ class ApcCachePool extends CacheItemPool
 	/**
 	 * {@inheritdoc}
 	 */
-	protected function getItemFromCache($key)
+	protected function fetchItemFromCache($key)
 	{
 		$exists     = false;
 		$cachedItem = apc_fetch($key, $exists);
