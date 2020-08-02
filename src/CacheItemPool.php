@@ -97,6 +97,8 @@ abstract class CacheItemPool implements CacheAwareAdapterInterface
 	 */
 	public function save(CacheItemInterface $item)
 	{
+		$timeToLive = null;
+
 		if (null !== ($expirationTimestamp = $item->getExpirationTimestamp())) {
 			$timeToLive = $expirationTimestamp - time();
 
