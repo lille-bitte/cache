@@ -13,7 +13,7 @@ use function time;
 /**
  * @author Paulus Gandung Prakosa <rvn.plvhx@gmail.com>
  */
-abstract class CacheItemPool implements CacheItemPoolInterface
+abstract class CacheItemPool implements CacheAwareAdapterInterface
 {
 	/**
 	 * @var array
@@ -31,7 +31,7 @@ abstract class CacheItemPool implements CacheItemPoolInterface
 			return $this->deferred[$key];
 		}
 
-		return new CacheItem($key, null);
+		return new CacheItem($key, $this->fetchItemFromCache($key));
 	}
 
 	/**
@@ -105,7 +105,7 @@ abstract class CacheItemPool implements CacheItemPoolInterface
 			}
 		}
 
-		return true;
+		return $this->storeItemToCache($item, $timeToLive);
 	}
 
 	/**
@@ -151,4 +151,36 @@ abstract class CacheItemPool implements CacheItemPoolInterface
 
 		return;
 	}
+
+	/**
+	 * Store cache item to cache storage.
+	 *
+	 * @param CacheItemInterface $item Cache item object.
+	 * @param int|null $ttl Expiration seconds from now.
+	 * @return true If saved.
+	 */
+	abstract protected function storeItemToCache(CacheItemInterface $item, $ttl);
+
+	/**
+	 * Get item from cache.
+	 *
+	 * @param string $key Key of cached item.
+	 * @return mixed
+	 */
+	abstract protected function fetchItemFromCache($key);
+
+	/**
+	 * Remove all cached item from cache.
+	 *
+	 * @return boolean
+	 */
+	abstract protected function removeAllItemFromCache();
+
+	/**
+	 * Remove cached item from cache.
+	 *
+	 * @param string $key
+	 * @return boolean
+	 */
+	abstract protected function removeItemFromCache($key);
 }
