@@ -17,6 +17,6 @@ class ApcCachePoolIntegrationTest extends CachePoolTest
 	 */
 	public function createCachePool()
 	{
-		return new CachePoolTest();
+		return new ApcCachePool();
 	}
 }
