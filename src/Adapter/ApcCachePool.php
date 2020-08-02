@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace LilleBitte\Cache\Adapter;
 
 use LilleBitte\Cache\CacheItemPool;
+use Psr\Cache\CacheItemInterface;
 
 use function apc_clear_cache;
 use function apc_delete;
