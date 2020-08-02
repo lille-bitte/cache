@@ -27,11 +27,6 @@ class CacheItem implements CacheItemInterface
 	private $value;
 
 	/**
-	 * @var bool
-	 */
-	private $hit;
-
-	/**
 	 * @var int|null
 	 */
 	private $expirationTimestamp;
@@ -67,7 +62,15 @@ class CacheItem implements CacheItemInterface
 	 */
 	public function isHit()
 	{
-		return $this->hit;
+		if (is_null($this->value)) {
+			return false;
+		}
+
+		if ($this->getExpirationTimestamp() !== null) {
+			return $this->getExpirationTimestamp() > time();
+		}
+
+		return true;
 	}
 
 	/**
