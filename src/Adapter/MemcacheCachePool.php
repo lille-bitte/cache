@@ -8,6 +8,9 @@ use Memcache;
 use LilleBitte\Cache\CacheItemPool;
 use Psr\Cache\CacheItemInterface;
 
+use function serialize;
+use function unserialize;
+
 /**
  * @author Paulus Gandung Prakosa <rvn.plvhx@gmail.com>
  */
