@@ -24,7 +24,7 @@ class ApcCachePool extends CacheItemPool
 	 */
 	protected function storeItemToCache(CacheItemInterface $item, $ttl)
 	{
-		return apc_store($item->getKey(), serialize($item->get()), $ttl);
+		return apc_store($item->getKey(), serialize($item->get()), $ttl ?? 0);
 	}
 
 	/**
