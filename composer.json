@@ -9,7 +9,11 @@
 			"LilleBitte\\Cache\\Tests\\": "tests/"
 		}
 	},
-    "require": {
-        "psr/cache": "^1.0"
-    }
+	"require": {
+		"psr/cache": "^1.0"
+	},
+	"require-dev": {
+		"phpunit/phpunit": "^7.5",
+		"cache/integration-tests": "^0.16"
+	}
 }
