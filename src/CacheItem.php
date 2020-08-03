@@ -129,6 +129,13 @@ class CacheItem implements CacheItemInterface
 		return $this->expirationTimestamp;
 	}
 
+	/**
+	 * Initialize all cache metadata from given array.
+	 *
+	 * @param string $key Cache key.
+	 * @param array $data Cache metadata.
+	 * @return void
+	 */
 	private function initialize($key, $data)
 	{
 		$this->key                 = $key;
