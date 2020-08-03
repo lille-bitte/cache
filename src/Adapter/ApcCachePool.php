@@ -24,7 +24,11 @@ class ApcCachePool extends CacheItemPool
 	 */
 	protected function storeItemToCache(CacheItemInterface $item, $ttl)
 	{
-		return apc_store($item->getKey(), serialize($item->get()), $ttl ?? 0);
+		return apc_store(
+			$item->getKey(),
+			serialize([$item->get(), $item->getExpirationTimestamp()]),
+			$ttl ?? 0
+		);
 	}
 
 	/**
@@ -36,10 +40,11 @@ class ApcCachePool extends CacheItemPool
 		$cachedItem = apc_fetch($key, $exists);
 
 		if (!$exists) {
-			return null;
+			return [$exists, null, null];
 		}
 
-		return unserialize($cachedItem);
+		$data = unserialize($cachedItem);
+		return [$exists, $data[0], $data[1]];
 	}
 
 	/**
