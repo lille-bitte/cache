@@ -62,7 +62,7 @@ abstract class CacheItemPool implements CacheAwareAdapterInterface
 	public function clear()
 	{
 		$this->deferred = [];
-		return true;
+		return $this->removeAllItemFromCache();
 	}
 
 	/**
@@ -75,7 +75,7 @@ abstract class CacheItemPool implements CacheAwareAdapterInterface
 		// remove from deferred item list.
 		unset($this->deferred[$key]);
 
-		return true;
+		return $this->removeItemFromCache($key);
 	}
 
 	/**
