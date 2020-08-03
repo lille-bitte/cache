@@ -21,6 +21,15 @@ abstract class CacheItemPool implements CacheAwareAdapterInterface
 	private $deferred = [];
 
 	/**
+	 * Deferred cache items must be committed before
+	 * call __destruct().
+	 */
+	public function __destruct()
+	{
+		$this->commit();
+	}
+
+	/**
 	 * {@inheritdoc}
 	 */
 	public function getItem($key)
