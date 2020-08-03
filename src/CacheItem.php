@@ -130,9 +130,9 @@ class CacheItem implements CacheItemInterface
 
 	private function initialize($key, $data)
 	{
-		$this->key = $key;
-		$this->hasValue = $data[0];
-		$this->expiresAt($data[2]);
-		$this->set($data[1]);
+		$this->key                 = $key;
+		$this->hasValue            = $data[0];
+		$this->value               = $data[1];
+		$this->expirationTimestamp = $data[2];
 	}
 }
