@@ -9,6 +9,8 @@ use DateTime;
 use DateTimeInterface;
 use Psr\Cache\CacheItemInterface;
 
+use function is_int;
+use function is_null;
 use function time;
 
 /**
@@ -130,7 +132,8 @@ class CacheItem implements CacheItemInterface
 	}
 
 	/**
-	 * Initialize all cache metadata from given array.
+	 * Initialize all cache metadata from given
+	 * cache metadata array.
 	 *
 	 * @param string $key Cache key.
 	 * @param array $data Cache metadata.
