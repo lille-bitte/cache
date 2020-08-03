@@ -6,7 +6,7 @@ namespace LilleBitte\Cache;
 
 use Psr\Cache\CacheItemInterface;
 use Psr\Cache\CacheItemPoolInterface;
-use Psr\Cache\InvalidArgumentException;
+use LilleBitte\Cache\Exception\InvalidArgumentException;
 
 use function time;
 
