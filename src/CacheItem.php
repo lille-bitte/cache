@@ -22,6 +22,11 @@ class CacheItem implements CacheItemInterface
 	private $key;
 
 	/**
+	 * @var bool
+	 */
+	private $hasValue;
+
+	/**
 	 * @var mixed
 	 */
 	private $value;
@@ -31,10 +36,9 @@ class CacheItem implements CacheItemInterface
 	 */
 	private $expirationTimestamp;
 
-	public function __construct($key, $value = null)
+	public function __construct($key, $data)
 	{
-		$this->key = $key;
-		$this->set($value);
+		$this->initialize($key, $data);
 	}
 
 	/**
@@ -62,7 +66,7 @@ class CacheItem implements CacheItemInterface
 	 */
 	public function isHit()
 	{
-		if (is_null($this->value)) {
+		if (!$this->hasValue) {
 			return false;
 		}
 
@@ -122,5 +126,13 @@ class CacheItem implements CacheItemInterface
 	public function getExpirationTimestamp()
 	{
 		return $this->expirationTimestamp;
+	}
+
+	private function initialize($key, $data)
+	{
+		$this->key = $key;
+		$this->hasValue = $data[0];
+		$this->expiresAt($data[2]);
+		$this->set($data[1]);
 	}
 }
