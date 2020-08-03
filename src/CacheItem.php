@@ -82,7 +82,8 @@ class CacheItem implements CacheItemInterface
 	 */
 	public function set($value)
 	{
-		$this->value = $value;
+		$this->hasValue = true;
+		$this->value    = $value;
 		return $this;
 	}
 
