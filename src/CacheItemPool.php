@@ -8,7 +8,6 @@ use Psr\Cache\CacheItemInterface;
 use Psr\Cache\CacheItemPoolInterface;
 use LilleBitte\Cache\Exception\InvalidArgumentException;
 
-use function empty;
 use function is_string;
 use function preg_match;
 use function time;
