@@ -27,7 +27,7 @@ class ApcuCachePool extends CacheItemPool
 		return apcu_store(
 			$item->getKey(),
 			serialize([$item->get(), $item->getExpirationTimestamp()]),
-			$ttl
+			$ttl ?? 0
 		);
 	}
 
