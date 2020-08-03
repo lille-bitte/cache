@@ -37,7 +37,8 @@ abstract class CacheItemPool implements CacheAwareAdapterInterface
 		$this->validateKey($key);
 
 		if (isset($this->deferred[$key])) {
-			return $this->deferred[$key];
+			$immutableCacheItem = clone $this->deferred[$key];
+			return $immutableCacheItem;
 		}
 
 		return new CacheItem($key, $this->fetchItemFromCache($key));
