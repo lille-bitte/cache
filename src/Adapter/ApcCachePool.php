@@ -55,6 +55,7 @@ class ApcCachePool extends CacheItemPool
 	 */
 	protected function removeItemFromCache($key)
 	{
-		return apc_delete($key);
+		apc_delete($key);
+		return true;
 	}
 }
