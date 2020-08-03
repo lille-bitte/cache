@@ -24,7 +24,11 @@ class ApcuCachePool extends CacheItemPool
 	 */
 	protected function storeItemToCache(CacheItemInterface $item, $ttl)
 	{
-		apcu_store($item->getKey(), serialize($item->get()), $ttl);
+		return apcu_store(
+			$item->getKey(),
+			serialize([$item->get(), $item->getExpirationTimestamp()]),
+			$ttl
+		);
 	}
 
 	/**
@@ -36,10 +40,11 @@ class ApcuCachePool extends CacheItemPool
 		$cachedItem = apcu_fetch($key, $exists);
 
 		if (!$exists) {
-			return null;
+			return [$exists, null, null];
 		}
 
-		return unserialize($cachedItem);
+		$data = unserialize($cachedItem);
+		return [$exists, $data[0], $data[1]];
 	}
 
 	/**
