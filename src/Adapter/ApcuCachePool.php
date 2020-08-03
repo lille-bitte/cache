@@ -60,6 +60,7 @@ class ApcuCachePool extends CacheItemPool
 	 */
 	protected function removeItemFromCache($key)
 	{
-		return apcu_delete($key);
+		apcu_delete($key);
+		return true;
 	}
 }
