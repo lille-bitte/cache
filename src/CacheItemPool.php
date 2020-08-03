@@ -154,6 +154,18 @@ abstract class CacheItemPool implements CacheAwareAdapterInterface
 	 */
 	private function validateKey($key)
 	{
+		if (!is_string($key)) {
+			throw new InvalidArgumentException(
+				"Cache key must be a string."
+			);
+		}
+
+		if (empty($key)) {
+			throw new InvalidArgumentException(
+				"A cache key must not be an empty string."
+			);
+		}
+
 		if (preg_match('/[\{\}\(\)\/\\\@\:]+/', $key)) {
 			throw new InvalidArgumentException(
 				"Invalid cache key provided."
