@@ -39,7 +39,7 @@ class ApcCachePool extends CacheItemPool
 		$exists     = false;
 		$cachedItem = apc_fetch($key, $exists);
 
-		if (!$exists) {
+		if (false === $exists) {
 			return [$exists, null, null];
 		}
 
