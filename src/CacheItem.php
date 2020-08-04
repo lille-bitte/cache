@@ -7,6 +7,7 @@ namespace LilleBitte\Cache;
 use DateInterval;
 use DateTime;
 use DateTimeInterface;
+use LilleBitte\Cache\Exception\InvalidArgumentException;
 use Psr\Cache\CacheItemInterface;
 
 use function is_int;
@@ -98,6 +99,10 @@ class CacheItem implements CacheItemInterface
 			$this->expirationTimestamp = $expiration->getTimestamp();
 		} else if (is_int($expiration) || is_null($expiration)) {
 			$this->expirationTimestamp = $expiration;
+		} else {
+			throw new InvalidArgumentException(
+				"Expiration time must be integer, null, or instance of 'DateTimeInterface'."
+			);
 		}
 
 		return $this;
@@ -116,6 +121,10 @@ class CacheItem implements CacheItemInterface
 			$this->expirationTimestamp = time() + $time;
 		} else if (is_null($time)) {
 			$this->expirationTimestamp = null;
+		} else {
+			throw new InvalidArgumentException(
+				"Expiration time must be integer, null, or instance of 'DateInterval'."
+			);
 		}
 
 		return $this;
