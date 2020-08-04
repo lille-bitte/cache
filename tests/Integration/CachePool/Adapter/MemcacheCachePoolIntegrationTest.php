@@ -18,6 +18,8 @@ class MemcacheCachePoolIntegrationTest extends CachePoolTest
 	 */
 	public function createCachePool()
 	{
-		return new MemcacheCachePool(new Memcache());
+		$memcache = new Memcache();
+		$memcache->addServer('localhost', 11211);
+		return new MemcacheCachePool($memcache);
 	}
 }
