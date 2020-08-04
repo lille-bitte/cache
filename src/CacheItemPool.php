@@ -36,7 +36,7 @@ abstract class CacheItemPool implements CacheAwareAdapterInterface
 	 */
 	public function getItem($key)
 	{
-		$this->validateKey($key);
+		$this->validateCacheKey($key);
 
 		if (isset($this->deferred[$key])) {
 			$immutableCacheItem = clone $this->deferred[$key];
@@ -82,7 +82,7 @@ abstract class CacheItemPool implements CacheAwareAdapterInterface
 	 */
 	public function deleteItem($key)
 	{
-		$this->validateKey($key);
+		$this->validateCacheKey($key);
 
 		// remove from deferred item list.
 		unset($this->deferred[$key]);
@@ -155,7 +155,7 @@ abstract class CacheItemPool implements CacheAwareAdapterInterface
 	 * @return boolean
 	 * @throws \Psr\Cache\InvalidArgumentException If cache key is invalid.
 	 */
-	private function validateKey($key)
+	private function validateCacheKey($key)
 	{
 		if (!is_string($key)) {
 			throw new InvalidArgumentException(
