@@ -31,7 +31,12 @@ class MemcacheCachePool extends CacheItemPool
 	 */
 	protected function storeItemToCache(CacheItemInterface $item, $ttl)
 	{
-		return $this->cache->set($item->getKey(), serialize($item->get()), 0, $ttl);
+		return $this->cache->set(
+			$item->getKey(),
+			serialize([$item->get(), $item->getExpirationTimestamp()]),
+			0,
+			$ttl ?? 0
+		);
 	}
 
 	/**
@@ -40,10 +45,11 @@ class MemcacheCachePool extends CacheItemPool
 	protected function fetchItemFromCache($key)
 	{
 		if (false === ($cachedItem = $this->cache->get($key))) {
-			return null;
+			return [false, null, null];
 		}
 
-		return unserialize($cachedItem);
+		$data = unserialize($cachedItem);
+		return [true, $data[0], $data[1]];
 	}
 
 	/**
@@ -59,6 +65,7 @@ class MemcacheCachePool extends CacheItemPool
 	 */
 	protected function removeItemFromCache($key)
 	{
-		return $this->cache->delete($key);
+		$this->cache->delete($key);
+		return true;
 	}
 }
