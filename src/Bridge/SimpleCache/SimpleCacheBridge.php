@@ -184,10 +184,6 @@ class SimpleCacheBridge implements CacheInterface
 			throw new InvalidArgumentException("Cache key must be a string.");
 		}
 
-		if ($key === '') {
-			throw new InvalidArgumentException("Cache key must not be an empty string.");
-		}
-
 		if (preg_match('/[\{\}\(\)\/\\\@\:]+/', $key)) {
 			throw new InvalidArgumentException("Invalid cache key.");
 		}
