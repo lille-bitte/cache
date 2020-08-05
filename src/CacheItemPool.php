@@ -17,196 +17,196 @@ use function time;
  */
 abstract class CacheItemPool implements CacheAwareAdapterInterface
 {
-	/**
-	 * @var array
-	 */
-	private $deferred = [];
+    /**
+     * @var array
+     */
+    private $deferred = [];
 
-	/**
-	 * Deferred cache items must be committed before
-	 * call __destruct().
-	 */
-	public function __destruct()
-	{
-		$this->commit();
-	}
+    /**
+     * Deferred cache items must be committed before
+     * call __destruct().
+     */
+    public function __destruct()
+    {
+        $this->commit();
+    }
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function getItem($key)
-	{
-		$this->validateCacheKey($key);
+    /**
+     * {@inheritdoc}
+     */
+    public function getItem($key)
+    {
+        $this->validateCacheKey($key);
 
-		if (isset($this->deferred[$key])) {
-			$immutableCacheItem = clone $this->deferred[$key];
-			return $immutableCacheItem;
-		}
+        if (isset($this->deferred[$key])) {
+            $immutableCacheItem = clone $this->deferred[$key];
+            return $immutableCacheItem;
+        }
 
-		return new CacheItem($key, $this->fetchItemFromCache($key));
-	}
+        return new CacheItem($key, $this->fetchItemFromCache($key));
+    }
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function getItems(array $keys = array())
-	{
-		$items = [];
+    /**
+     * {@inheritdoc}
+     */
+    public function getItems(array $keys = [])
+    {
+        $items = [];
 
-		foreach ($keys as $key) {
-			$items[$key] = $this->getItem($key);
-		}
+        foreach ($keys as $key) {
+            $items[$key] = $this->getItem($key);
+        }
 
-		return $items;
-	}
+        return $items;
+    }
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function hasItem($key)
-	{
-		return $this->getItem($key)->isHit();
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public function hasItem($key)
+    {
+        return $this->getItem($key)->isHit();
+    }
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function clear()
-	{
-		$this->deferred = [];
-		return $this->removeAllItemFromCache();
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public function clear()
+    {
+        $this->deferred = [];
+        return $this->removeAllItemFromCache();
+    }
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function deleteItem($key)
-	{
-		$this->validateCacheKey($key);
+    /**
+     * {@inheritdoc}
+     */
+    public function deleteItem($key)
+    {
+        $this->validateCacheKey($key);
 
-		// remove from deferred item list.
-		unset($this->deferred[$key]);
+        // remove from deferred item list.
+        unset($this->deferred[$key]);
 
-		return $this->removeItemFromCache($key);
-	}
+        return $this->removeItemFromCache($key);
+    }
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function deleteItems(array $keys)
-	{
-		foreach ($keys as $key) {
-			if (false === $this->deleteItem($key)) {
-				return false;
-			}
-		}
+    /**
+     * {@inheritdoc}
+     */
+    public function deleteItems(array $keys)
+    {
+        foreach ($keys as $key) {
+            if (false === $this->deleteItem($key)) {
+                return false;
+            }
+        }
 
-		return true;
-	}
+        return true;
+    }
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function save(CacheItemInterface $item)
-	{
-		$timeToLive = null;
+    /**
+     * {@inheritdoc}
+     */
+    public function save(CacheItemInterface $item)
+    {
+        $timeToLive = null;
 
-		if (null !== ($expirationTimestamp = $item->getExpirationTimestamp())) {
-			$timeToLive = $expirationTimestamp - time();
+        if (null !== ($expirationTimestamp = $item->getExpirationTimestamp())) {
+            $timeToLive = $expirationTimestamp - time();
 
-			if ($timeToLive < 0) {
-				return $this->deleteItem($item->getKey());
-			}
-		}
+            if ($timeToLive < 0) {
+                return $this->deleteItem($item->getKey());
+            }
+        }
 
-		return $this->storeItemToCache($item, $timeToLive);
-	}
+        return $this->storeItemToCache($item, $timeToLive);
+    }
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function saveDeferred(CacheItemInterface $item)
-	{
-		$this->deferred[$item->getKey()] = $item;
-		return true;
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public function saveDeferred(CacheItemInterface $item)
+    {
+        $this->deferred[$item->getKey()] = $item;
+        return true;
+    }
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function commit()
-	{
-		$isSaved = true;
+    /**
+     * {@inheritdoc}
+     */
+    public function commit()
+    {
+        $isSaved = true;
 
-		foreach ($this->deferred as $delayedItem) {
-			if (!$this->save($delayedItem)) {
-				$isSaved = false;
-			}
-		}
+        foreach ($this->deferred as $delayedItem) {
+            if (!$this->save($delayedItem)) {
+                $isSaved = false;
+            }
+        }
 
-		$this->deferred = [];
-		return $isSaved;
-	}
+        $this->deferred = [];
+        return $isSaved;
+    }
 
-	/**
-	 * Validate given cache key.
-	 *
-	 * @param string $key Cache key.
-	 * @return boolean
-	 * @throws \Psr\Cache\InvalidArgumentException If cache key is invalid.
-	 */
-	private function validateCacheKey($key)
-	{
-		if (!is_string($key)) {
-			throw new InvalidArgumentException(
-				"Cache key must be a string."
-			);
-		}
+    /**
+     * Validate given cache key.
+     *
+     * @param string $key Cache key.
+     * @return boolean
+     * @throws \Psr\Cache\InvalidArgumentException If cache key is invalid.
+     */
+    private function validateCacheKey($key)
+    {
+        if (!is_string($key)) {
+            throw new InvalidArgumentException(
+                "Cache key must be a string."
+            );
+        }
 
-		if ('' === $key) {
-			throw new InvalidArgumentException(
-				"A cache key must not be an empty string."
-			);
-		}
+        if ('' === $key) {
+            throw new InvalidArgumentException(
+                "A cache key must not be an empty string."
+            );
+        }
 
-		if (preg_match('/[\{\}\(\)\/\\\@\:]+/', $key)) {
-			throw new InvalidArgumentException(
-				"Invalid cache key provided."
-			);
-		}
+        if (preg_match('/[\{\}\(\)\/\\\@\:]+/', $key)) {
+            throw new InvalidArgumentException(
+                "Invalid cache key provided."
+            );
+        }
 
-		return;
-	}
+        return;
+    }
 
-	/**
-	 * Store cache item to cache storage.
-	 *
-	 * @param CacheItemInterface $item Cache item object.
-	 * @param int|null $ttl Expiration seconds from now.
-	 * @return true If saved.
-	 */
-	abstract protected function storeItemToCache(CacheItemInterface $item, $ttl);
+    /**
+     * Store cache item to cache storage.
+     *
+     * @param CacheItemInterface $item Cache item object.
+     * @param int|null $ttl Expiration seconds from now.
+     * @return true If saved.
+     */
+    abstract protected function storeItemToCache(CacheItemInterface $item, $ttl);
 
-	/**
-	 * Get item from cache.
-	 *
-	 * @param string $key Key of cached item.
-	 * @return mixed
-	 */
-	abstract protected function fetchItemFromCache($key);
+    /**
+     * Get item from cache.
+     *
+     * @param string $key Key of cached item.
+     * @return mixed
+     */
+    abstract protected function fetchItemFromCache($key);
 
-	/**
-	 * Remove all cached item from cache.
-	 *
-	 * @return boolean
-	 */
-	abstract protected function removeAllItemFromCache();
+    /**
+     * Remove all cached item from cache.
+     *
+     * @return boolean
+     */
+    abstract protected function removeAllItemFromCache();
 
-	/**
-	 * Remove cached item from cache.
-	 *
-	 * @param string $key
-	 * @return boolean
-	 */
-	abstract protected function removeItemFromCache($key);
+    /**
+     * Remove cached item from cache.
+     *
+     * @param string $key
+     * @return boolean
+     */
+    abstract protected function removeItemFromCache($key);
 }
