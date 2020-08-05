@@ -19,48 +19,48 @@ use function unserialize;
  */
 class ApcCachePool extends CacheItemPool
 {
-	/**
-	 * {@inheritdoc}
-	 */
-	protected function storeItemToCache(CacheItemInterface $item, $ttl)
-	{
-		return apc_store(
-			$item->getKey(),
-			serialize([$item->get(), $item->getExpirationTimestamp()]),
-			$ttl ?? 0
-		);
-	}
+    /**
+     * {@inheritdoc}
+     */
+    protected function storeItemToCache(CacheItemInterface $item, $ttl)
+    {
+        return apc_store(
+            $item->getKey(),
+            serialize([$item->get(), $item->getExpirationTimestamp()]),
+            $ttl ?? 0
+        );
+    }
 
-	/**
-	 * {@inheritdoc}
-	 */
-	protected function fetchItemFromCache($key)
-	{
-		$exists     = false;
-		$cachedItem = apc_fetch($key, $exists);
+    /**
+     * {@inheritdoc}
+     */
+    protected function fetchItemFromCache($key)
+    {
+        $exists     = false;
+        $cachedItem = apc_fetch($key, $exists);
 
-		if (!$exists) {
-			return [$exists, null, null];
-		}
+        if (!$exists) {
+            return [$exists, null, null];
+        }
 
-		$data = unserialize($cachedItem);
-		return [$exists, $data[0], $data[1]];
-	}
+        $data = unserialize($cachedItem);
+        return [$exists, $data[0], $data[1]];
+    }
 
-	/**
-	 * {@inheritdoc}
-	 */
-	protected function removeAllItemFromCache()
-	{
-		return apc_clear_cache('user');
-	}
+    /**
+     * {@inheritdoc}
+     */
+    protected function removeAllItemFromCache()
+    {
+        return apc_clear_cache('user');
+    }
 
-	/**
-	 * {@inheritdoc}
-	 */
-	protected function removeItemFromCache($key)
-	{
-		apc_delete($key);
-		return true;
-	}
+    /**
+     * {@inheritdoc}
+     */
+    protected function removeItemFromCache($key)
+    {
+        apc_delete($key);
+        return true;
+    }
 }
