@@ -94,7 +94,7 @@ class SimpleCacheBridge implements CacheInterface
 		}
 
 		$keys = ($keys instanceof Traversable)
-			? iterator_to_array($keys)
+			? iterator_to_array($keys, false)
 			: $keys;
 
 		try {
