@@ -23,7 +23,7 @@ class MemcacheSimpleCacheIntegrationTest extends SimpleCacheTest
 	{
 		$memcache = new Memcache();
 		$memcache->addServer('localhost');
-		return $memcache;
+		return new MemcacheCachePool($memcache);
 	}
 
 	/**
