@@ -14,23 +14,23 @@ use LilleBitte\Cache\Bridge\SimpleCache\SimpleCacheBridge;
  */
 class MemcacheSimpleCacheIntegrationTest extends SimpleCacheTest
 {
-	/**
-	 * Create cache pool object.
-	 *
-	 * @return CacheItemPoolInterface
-	 */
-	private function createCachePool()
-	{
-		$memcache = new Memcache();
-		$memcache->addServer('localhost');
-		return new MemcacheCachePool($memcache);
-	}
+    /**
+     * Create cache pool object.
+     *
+     * @return CacheItemPoolInterface
+     */
+    private function createCachePool()
+    {
+        $memcache = new Memcache();
+        $memcache->addServer('localhost');
+        return new MemcacheCachePool($memcache);
+    }
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function createSimpleCache()
-	{
-		return new SimpleCacheBridge($this->createCachePool());
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public function createSimpleCache()
+    {
+        return new SimpleCacheBridge($this->createCachePool());
+    }
 }
