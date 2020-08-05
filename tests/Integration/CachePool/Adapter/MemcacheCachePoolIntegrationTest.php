@@ -13,13 +13,13 @@ use LilleBitte\Cache\Adapter\MemcacheCachePool;
  */
 class MemcacheCachePoolIntegrationTest extends CachePoolTest
 {
-	/**
-	 * {@inheritdoc}
-	 */
-	public function createCachePool()
-	{
-		$memcache = new Memcache();
-		$memcache->addServer('localhost', 11211);
-		return new MemcacheCachePool($memcache);
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public function createCachePool()
+    {
+        $memcache = new Memcache();
+        $memcache->addServer('localhost', 11211);
+        return new MemcacheCachePool($memcache);
+    }
 }
