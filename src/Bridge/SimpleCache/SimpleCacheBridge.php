@@ -136,7 +136,6 @@ class SimpleCacheBridge implements CacheInterface
 			);
 		}
 
-		$values       = ($values instanceof Traversable) ? iterator_to_array($values) : $values;
 		$gotException = null;
 		$isSaved      = true;
 
