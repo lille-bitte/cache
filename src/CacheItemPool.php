@@ -163,7 +163,7 @@ abstract class CacheItemPool implements CacheAwareAdapterInterface
 			);
 		}
 
-		if (empty($key)) {
+		if ('' === $key) {
 			throw new InvalidArgumentException(
 				"A cache key must not be an empty string."
 			);
