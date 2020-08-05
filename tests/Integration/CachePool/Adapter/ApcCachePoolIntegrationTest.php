@@ -12,11 +12,11 @@ use LilleBitte\Cache\Adapter\ApcCachePool;
  */
 class ApcCachePoolIntegrationTest extends CachePoolTest
 {
-	/**
-	 * {@inheritdoc}
-	 */
-	public function createCachePool()
-	{
-		return new ApcCachePool();
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public function createCachePool()
+    {
+        return new ApcCachePool();
+    }
 }
