@@ -22,7 +22,7 @@ class MemcachedSimpleCacheIntegrationTest extends SimpleCacheTest
 	private function createCachePool()
 	{
 		$memcached = new Memcached();
-		$memcached->addServer('localhost');
+		$memcached->addServer('localhost', 11211);
 		return new MemcachedCachePool($memcached);
 	}
 
