@@ -13,21 +13,21 @@ use LilleBitte\Cache\Bridge\SimpleCache\SimpleCacheBridge;
  */
 class ApcSimpleCacheIntegrationTest extends SimpleCacheTest
 {
-	/**
-	 * Create cache pool object.
-	 *
-	 * @return CacheItemPoolInterface
-	 */
-	private function createCachePool()
-	{
-		return new ApcCachePool();
-	}
+    /**
+     * Create cache pool object.
+     *
+     * @return CacheItemPoolInterface
+     */
+    private function createCachePool()
+    {
+        return new ApcCachePool();
+    }
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function createSimpleCache()
-	{
-		return new SimpleCacheBridge($this->createCachePool());
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public function createSimpleCache()
+    {
+        return new SimpleCacheBridge($this->createCachePool());
+    }
 }
