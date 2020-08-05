@@ -87,7 +87,7 @@ class SimpleCacheBridge implements CacheInterface
 	 */
 	public function getMultiple($keys, $default = null)
 	{
-		if (!is_array($keys) || !($keys instanceof Traversable)) {
+		if (!is_array($keys) && !($keys instanceof Traversable)) {
 			throw new InvalidArgumentException(
 				"Keys must be an array or instance of 'Traversable'"
 			);
@@ -130,7 +130,7 @@ class SimpleCacheBridge implements CacheInterface
 	 */
 	public function setMultiple($values, $ttl = null)
 	{
-		if (!is_array($values) || !($values instanceof Traversable)) {
+		if (!is_array($values) && !($values instanceof Traversable)) {
 			throw new InvalidArgumentException(
 				"Values must be an array or instance of 'Traversable'"
 			);
@@ -198,7 +198,7 @@ class SimpleCacheBridge implements CacheInterface
 	 */
 	public function deleteMultiple($keys)
 	{
-		if (!is_array($keys) || !($keys instanceof Traversable)) {
+		if (!is_array($keys) && !($keys instanceof Traversable)) {
 			throw new InvalidArgumentException(
 				"Cache keys must be an array or instance of 'Traversable'."
 			);
