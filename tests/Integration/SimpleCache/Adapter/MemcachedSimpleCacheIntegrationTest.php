@@ -29,7 +29,7 @@ class MemcachedSimpleCacheIntegrationTest extends SimpleCacheTest
 	/**
 	 * {@inheritdoc}
 	 */
-	public function createCachePool()
+	public function createSimpleCache()
 	{
 		return new SimpleCacheBridge($this->createCachePool());
 	}
